@@ -1,14 +1,15 @@
-### [ Follow Me ]
+### Follow Me 
 
 In this project we train a Fully Convolutional Network (FCN) to be able to identify a target in a simulated drone environment. A FCN is similar to a Convolutional Neural Network (CNN) but adds Skip Connections and the encode/decode step.
 
-### [ The Main Libraries ] 
+### The Main Libraries  
 
-	TensorFlow is an open source deep learning library for numerical computation using data flow graphs. The graph nodes represent mathematical operations, while the graph edges represent the multidimensional data arrays (tensors) that flow between them. This flexible architecture enables you to deploy computation to one or more CPUs or GPUs in a desktop, server, or mobile device without rewriting code. 
-	Keras is a high level deep learning API that allows you to focus on network architecture rather than on smaller details building up to the network. Keras has recently been included in the TensorFlow library. 
+TensorFlow is an open source deep learning library for numerical computation using data flow graphs. The graph nodes represent mathematical operations, while the graph edges represent the multidimensional data arrays (tensors) that flow between them. This flexible architecture enables you to deploy computation to one or more CPUs or GPUs in a desktop, server, or mobile device without rewriting code.
+
+Keras is a high level deep learning API that allows you to focus on network architecture rather than on smaller details building up to the network. Keras has recently been included in the TensorFlow library. 
 
 
-### [ The Data Set ]
+### The Data Set 
 
 01- Training data 
 
@@ -35,11 +36,11 @@ In this project we train a Fully Convolutional Network (FCN) to be able to ident
 	2- model_weights
 
 
-### [ Network Architecture ]
+###  Network Architecture 
 
 Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 
-Build the Model
+#### Build the Model
 
 	1- Encoder block
 		a- separable convolutions
@@ -51,7 +52,7 @@ Build the Model
 	3- Fully Convolutional Network
 
 
-1- Encoder Block
+#### 1- Encoder Block
 
 a- Separable Convolutions
 
