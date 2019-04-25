@@ -68,8 +68,7 @@ Coding Seperable Convolutions
 	implemented the function as follows:
 
 
-	output = SeparableConv2DKeras(filters, kernel_size, strides,
-                             	padding, activation)(input)
+	output = SeparableConv2DKeras(filters, kernel_size, strides, padding, activation)(input)
 				
 
 	input = input layer,
@@ -122,7 +121,8 @@ def encoder_block(input_layer, filters, strides):
 
 #### a- bilinear upsampling
 
-	Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest known pixels, located 			diagonally to a given pixel.
+	Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest 
+	known pixels, located diagonally to a given pixel.
 
 	The weighted average is usually distance dependent
 
@@ -142,7 +142,8 @@ Coding Bilinear Upsampler
 
 #### b- layer concatenation step. 
 
-	Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, presents us with 	 the same functionality. 
+	Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, 
+	presents us with the same functionality. 
 
 	implemented as follows:
 
@@ -164,8 +165,10 @@ def decoder_block(small_ip_layer, large_ip_layer, filters):
     
     # TODO Upsample the small input layer using the bilinear_upsample() function.
     upsampled_layer = bilinear_upsample(small_ip_layer)
+    
     # TODO Concatenate the upsampled and large input layers using layers.concatenate
     output_layer = layers.concatenate([upsampled_layer, large_ip_layer])
+    
     # TODO Add some number of separable convolution layers
     output_layer = separable_conv2d_batchnorm(output_layer, filters)
     return output_layer
@@ -176,9 +179,11 @@ I created 2 encoder/decoder levels because I was able to tweak the network payma
 
 	1.  Instead of fully connected layers We use 1x1 convolution layer
 
-	2. Up-sampling is done by using bi-linear up-sampling,which help in up sampling the previous layer to a desired resolution or 		dimension and help speed up performance. 
+	2. Up-sampling is done by using bi-linear up-sampling,which help in up sampling the previous layer
+	to a desired resolution or dimension and help speed up performance. 
 
-	3.Skip connections, which allows to use information from multiple resolution scales from the encoder to decoder process
+	3.Skip connections, which allows to use information from multiple resolution scales from the encoder
+	to decoder process
 
 
 #### Encoder block layers
@@ -211,7 +216,7 @@ First decoder block layer
 	large input layer = the first convolution layer,  mimicking a skip connection
 	filter size  =  64
  
-second decoder block layer
+Second decoder block layer
 
 	small input layer = output from the first decoder block  
 	large input layer = original image  mimicking a skip connection better  
@@ -219,7 +224,7 @@ second decoder block layer
 	
 	The output convolution layer applies a softmax activation function to the output of the second decoder block.
 
-FCN code here: 
+#### Fully Convolutional Network code here: 
 
 	def fcn_model(inputs, num_classes):
     
@@ -234,7 +239,7 @@ FCN code here:
     		x_almost = decoder_block(small_ip_layer, output_layer, filters = 64)
     		x = decoder_block(x_almost, inputs ,filters = 32)
     
-    		# The function returns the output layer of your model. "x" is the final layer obtained from the last                                                                	decoder_block()
+    		# The function returns the output layer of your model. "x" is the final layer obtained from the last                                     decoder_block()
 		return layers.Conv2D(num_classes, 1, activation='softmax', padding='same')(x)
 
 
@@ -358,9 +363,6 @@ target hero:
 	wearing red cloths 
 	where once trained it will be able to identify the hero from common people 
 	
-
-
-
 
 ## Final Comments:
 
