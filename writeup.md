@@ -288,54 +288,45 @@ Test_01
 	Time = 196 s per epoch 
 	final score = 0.390761421554
 
+
 Test_02
- 
-	learning_rate = 0.004
-	batch_size = 64
-	num_epochs = 35
-	steps_per_epoch = 50
-	validation_steps = 50
-	workers = 8
-	Time = 47 s per epoch 
-	final score = 0.421483909688
 
-
-Test_03 
-
-	learning_rate = 0.004
-	batch_size = 32
-	num_epochs = 35
-	steps_per_epoch = 100
-	validation_steps = 100
-	workers = 32
-	Time =  62s
-	final score = 0.392293308138
-
-
-
-Test_04 
- 
-	learning_rate = 0.004
-	batch_size = 64
-	num_epochs = 35
-	steps_per_epoch = 75
-	validation_steps = 75
-	workers = 32
-	Time = 86s 
-	final score = 0.39924187389526666
-
-
-Test_05 
- 
 	learning_rate = 0.003
-	batch_size = 64
-	num_epochs = 35
+	batch_size = 128
+	num_epochs = 20
 	steps_per_epoch = 100
 	validation_steps = 100
-	workers = 32
+	workers = 2
 
-	Time =  103s
-	final score_1  = 0.404880830407881
+	190s - loss: 0.0276 - val_loss: 0.0372
+	0.3843644541361609
+
+
+Test_03
+
+
+	learning_rate = 0.002
+	batch_size = 64
+	num_epochs = 20
+	steps_per_epoch = 100
+	validation_steps = 100
+	workers = 2
+
+	97s - loss: 0.0235 - val_loss: 0.0329
+	0.3959361719740918
+
+
+Test_04
+
+	learning_rate = 0.001
+	batch_size = 64
+	num_epochs = 40
+	steps_per_epoch = 100
+	validation_steps = 100
+	workers = 2
+
+	96s - loss: 0.0207 - val_loss: 0.0294
+	0.4177765472185131
 
 	Time_2 =  
 	final score_2 =
@@ -349,6 +340,10 @@ Test_05
 measure the model's performance:
 
  	IOU (intersection over union) metric is used which takes the intersection of the prediction 	pixels and ground truth pixels and divides it by the union of them.
+	
+
+
+	
 	
 	Time_3 = 
 	final sore_3 =
