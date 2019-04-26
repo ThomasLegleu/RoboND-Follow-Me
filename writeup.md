@@ -4,24 +4,24 @@ In this project we train a Fully Convolutional Network (FCN) to be able to ident
 
 ## The Main Libraries  
 
-TensorFlow is an open source deep learning library for numerical computation using data flow graphs. The graph nodes represent mathematical operations, while the graph edges represent the multidimensional data arrays (tensors) that flow between them. This flexible architecture enables you to deploy computation to one or more CPUs or GPUs in a desktop, server, or mobile device without rewriting code.
+TensorFlow: is an open source deep learning library for numerical computation using data flow graphs. 
 
-Keras is a high level deep learning API that allows you to focus on network architecture rather than on smaller details building up to the network. Keras has recently been included in the TensorFlow library. 
+Keras: is a high level deep learning API that allows you to focus on network architecture rather than on smaller details building up to the network. Keras has recently been included in the TensorFlow library. 
 
 
 ## The Data Set 
 
 01- Training data 
 
-	   train.zip: training set images: 4131 RGB images
-	   masks: 4131 mask images Target: Blue; Pedestrian: Green; Background: Red
+	train.zip: training set images: 4131 RGB images
+	masks: 4131 mask images Target: Blue; Pedestrian: Green; Background: Red
 
 02- Validation data
  
-	 validation.zip: validation set images: 1184 RGB images
-	 masks: 1184 mask images
- 
-	-Measures how well the network is trained [ avoids overfitting!!! ]
+	validation.zip: validation set images: 1184 RGB images
+	masks: 1184 mask images
+
+	avoids overfitting
 
 03- Test Images 
 
@@ -32,8 +32,8 @@ Keras is a high level deep learning API that allows you to focus on network arch
 
 	2 files:
 
-	1- configuration_weights file. 
-	2- model_weights
+	1- configuration_weights file.h5 
+	2- model_weights.h5
 
 
 ##  Network Architecture 
@@ -46,16 +46,18 @@ Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 
 	a- separable convolutions
 	b- batch normalization
+	c- Encoder Block Process/Code
 	
 2- Decoder block
 
   	a- bilinear upsampling
 	b- layer concatenation
 	c- additional separable convolution layers
+	d- Decoder Block Process/Code
 	
 3- Fully Convolutional Network
 
-	a- encoder block(s)  - 1x1 convolution - decoder blocks(s)
+	a- encoder block(s) - 1x1 convolution - decoder blocks(s)
 
 
 #### 1- Encoder Block
@@ -64,9 +66,7 @@ Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 
 -convolution performed over each channel, different than regular convolutions bc reduction in the number of parameters which improves runtime performance, and reducing overfitting because fewer parameters
 
--Coding Seperable Convolutions
-
-An optimized version of separable convolutions = provided in the utils module of the provided repo. 
+-Coding Seperable Convolutions:An optimized version of separable convolutions = provided in the utils module of the provided repo. 
 implemented the function as follows:
 
 	output = SeparableConv2DKeras(filters, kernel_size, strides, padding, activation)(input)
@@ -83,31 +83,24 @@ implemented the function as follows:
 
 #### b- Batch Normalization
 
-instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network by using the mean and variance of the values in the current mini-batch.
+-instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network by using the mean and variance of the values in the current mini-batch.
 	
-Benefits of Batch Normalization
+-Benefits of Batch Normalization: Networks train faster, Allows higher learning rates, Simplifies the creation of deeper networks, and adds a bit of regularization
 
-1- Networks train faster
-2- Allows higher learning rates
-3- Simplifies the creation of deeper networks
-4- a bit of regularization
-
-Coding Batch Normalization
-
-In tf.contrib.keras, batch normalization can be implemented with the following function definition:
+-Coding Batch Normalization: In tf.contrib.keras, batch normalization can be implemented with the following function definition:
 
 	from tensorflow.contrib.keras.python.keras import layers
 
 	output = layers.BatchNormalization()(input) 
 
 
-#### Encoder Block Process/Code
+#### c- Encoder Block Process/Code
 
-   Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
+- Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
 
-separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution 	layer
+- separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution layer
  
-The filters parameter defines the size or depth of the output layer = 32 or 64. 
+- The filters parameter defines the size or depth of the output layer = 32 or 64. 
 
 	def encoder_block(input_layer, filters, strides):
     
@@ -120,12 +113,12 @@ The filters parameter defines the size or depth of the output layer = 32 or 64.
 
 #### a- bilinear upsampling
 
-Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest 
+-Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest 
 known pixels, located diagonally to a given pixel.
 
-The weighted average is usually distance dependent
+-The weighted average is usually distance dependent
 
-Coding Bilinear Upsampler: An optimized version of a bilinear upsampler has been provided --->  utils module of the provided repo 
+-Coding Bilinear Upsampler: An optimized version of a bilinear upsampler has been provided --->  utils module of the provided repo 
 implemented the function as follows:
 
 	output = BilinearUpSampling2D(row, col)(input)
@@ -136,9 +129,9 @@ implemented the function as follows:
 	output = output layer.
 
 
-#### b- layer concatenation step. 
+#### b- Layer Concatenation step. 
 
-Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, 
+-Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, 
 presents us with the same functionality. 
 
 implemented as follows:
@@ -152,7 +145,7 @@ implemented as follows:
 
 #### c- Some (one or two) additional separable convolution layers to extract some more spatial information from prior layers.
 
-#### Decoder Block Process/Code
+#### d- Decoder Block Process/Code
 
 	def decoder_block(small_ip_layer, large_ip_layer, filters):
 
