@@ -43,24 +43,28 @@ Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 ### Build the Model
 
 1- Encoder block
+
 	a- separable convolutions
 	b- batch normalization
+	
 2- Decoder block
+
   	a- bilinear upsampling
 	b- layer concatenation
 	c- additional separable convolution layers
+	
 3- Fully Convolutional Network
+
 	a- encoder block(s)  - 1x1 convolution - decoder blocks(s)
 
 
 #### 1- Encoder Block
 
 #### a- Separable Convolutions
--convolution performed over each channel  
--different than regular convolutions bc reduction in the number of parameters which improves runtime performance 
--reducing overfitting because fewer parameters
 
-Coding Seperable Convolutions
+-convolution performed over each channel, different than regular convolutions bc reduction in the number of parameters which improves runtime performance, and reducing overfitting because fewer parameters
+
+-Coding Seperable Convolutions
 
 An optimized version of separable convolutions = provided in the utils module of the provided repo. 
 implemented the function as follows:
@@ -79,9 +83,7 @@ implemented the function as follows:
 
 #### b- Batch Normalization
 
-instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network. 
-	
-during “ training” we use the mean and variance of the values in the current mini-batch.
+instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network by using the mean and variance of the values in the current mini-batch.
 	
 Benefits of Batch Normalization
 
