@@ -42,31 +42,31 @@ Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 
 ### Build the Model
 
-	1- Encoder block
-		a- separable convolutions
-		b- batch normalization
-	2- Decoder block
-  		a- bilinear upsampling
-		b- layer concatenation
-		c- additional separable convolution layers
-	3- Fully Convolutional Network
+1- Encoder block
+	a- separable convolutions
+	b- batch normalization
+2- Decoder block
+  	a- bilinear upsampling
+	b- layer concatenation
+	c- additional separable convolution layers
+3- Fully Convolutional Network
+	a- encoder block(s)  - 1x1 convolution - decoder blocks(s)
 
 
 #### 1- Encoder Block
 
 #### a- Separable Convolutions
 
-	convolution performed over each channel  
+convolution performed over each channel  
 	
-	different than regular convolutions bc reduction in the number of parameters which improves runtime performance 
+different than regular convolutions bc reduction in the number of parameters which improves runtime performance 
 
- 	reducing overfitting because fewer parameters
+reducing overfitting because fewer parameters
 
 Coding Seperable Convolutions
 
-	An optimized version of separable convolutions = provided in the utils module of the provided repo. 
-	implemented the function as follows:
-
+An optimized version of separable convolutions = provided in the utils module of the provided repo. 
+implemented the function as follows:
 
 	output = SeparableConv2DKeras(filters, kernel_size, strides, padding, activation)(input)
 				
@@ -82,20 +82,20 @@ Coding Seperable Convolutions
 
 #### b- Batch Normalization
 
- 	instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network. 
+instead of just normalizing the inputs to the network ----> normalize the inputs to layers within the network. 
 	
-  	during “ training” we use the mean and variance of the values in the current mini-batch.
+during “ training” we use the mean and variance of the values in the current mini-batch.
 	
-	Benefits of Batch Normalization
+Benefits of Batch Normalization
 
-	1- Networks train faster
-	2- Allows higher learning rates
-	3- Simplifies the creation of deeper networks
-	4- a bit of regularization
+1- Networks train faster
+2- Allows higher learning rates
+3- Simplifies the creation of deeper networks
+4- a bit of regularization
 
 Coding Batch Normalization
 
-	In tf.contrib.keras, batch normalization can be implemented with the following function definition:
+In tf.contrib.keras, batch normalization can be implemented with the following function definition:
 
 	from tensorflow.contrib.keras.python.keras import layers
 
@@ -104,13 +104,13 @@ Coding Batch Normalization
 
 #### Encoder Block Process/Code
 
-	Create an encoder block that includes a separable convolution layer using the 	separable_conv2d_batchnorm()  function.
+   Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
 
-	separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution 	layer
+separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution 	layer
  
-	The filters parameter defines the size or depth of the output layer = 32 or 64. 
+The filters parameter defines the size or depth of the output layer = 32 or 64. 
 
-def encoder_block(input_layer, filters, strides):
+	def encoder_block(input_layer, filters, strides):
     
    	# TODO Create a separable convolution layer using the separable_conv2d_batchnorm() function.
     	output_layer = separable_conv2d_batchnorm(input_layer, filters, strides)
@@ -121,16 +121,13 @@ def encoder_block(input_layer, filters, strides):
 
 #### a- bilinear upsampling
 
-	Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest 
-	known pixels, located diagonally to a given pixel.
+Bilinear upsampling is a resampling technique that utilizes the weighted average of four nearest 
+known pixels, located diagonally to a given pixel.
 
-	The weighted average is usually distance dependent
+The weighted average is usually distance dependent
 
-Coding Bilinear Upsampler
-	
-	An optimized version of a bilinear upsampler has been provided --->  utils module of the provided repo 
-
-	implemented the function as follows:
+Coding Bilinear Upsampler: An optimized version of a bilinear upsampler has been provided --->  utils module of the provided repo 
+implemented the function as follows:
 
 	output = BilinearUpSampling2D(row, col)(input)
 
@@ -142,38 +139,35 @@ Coding Bilinear Upsampler
 
 #### b- layer concatenation step. 
 
-	Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, 
-	presents us with the same functionality. 
+Concatenating two layers, the upsampled layer and a layer with more spatial information than the upsampled one, 
+presents us with the same functionality. 
 
-	implemented as follows:
+implemented as follows:
 
 	from tensorflow.contrib.keras.python.keras import layers
 	output = layers.concatenate(inputs)
 
 	inputs = list of the layers that you are concatenating.
-
 	output = layers.concatenate([input_layer_1, input_layer_2])	
-	
-	will concatenate the small_ip_layer and the large_ip_layer.
 
 
 #### c- Some (one or two) additional separable convolution layers to extract some more spatial information from prior layers.
 
 #### Decoder Block Process/Code
 
-def decoder_block(small_ip_layer, large_ip_layer, filters):
+	def decoder_block(small_ip_layer, large_ip_layer, filters):
+
+	    # TODO Upsample the small input layer using the bilinear_upsample() function.
+	    upsampled_layer = bilinear_upsample(small_ip_layer)
+
+	    # TODO Concatenate the upsampled and large input layers using layers.concatenate
+	    output_layer = layers.concatenate([upsampled_layer, large_ip_layer])
+
+	    # TODO Add some number of separable convolution layers
+	    output_layer = separable_conv2d_batchnorm(output_layer, filters)
+	    return output_layer
     
-    # TODO Upsample the small input layer using the bilinear_upsample() function.
-    upsampled_layer = bilinear_upsample(small_ip_layer)
-    
-    # TODO Concatenate the upsampled and large input layers using layers.concatenate
-    output_layer = layers.concatenate([upsampled_layer, large_ip_layer])
-    
-    # TODO Add some number of separable convolution layers
-    output_layer = separable_conv2d_batchnorm(output_layer, filters)
-    return output_layer
-    
-### 3- Fully convolutional Network used for identification in the follow me code:
+### 3- Fully Convolutional Network used for identification:
 
 I created 2 encoder/decoder levels because I was able to tweak the network paymasters enough to achieve a high enough final score. The FCN model used for the project contains two encoder block layers, a 1x1 convolution layer, two decoder block layers, and filter depths between 32 and 64.
 
@@ -264,16 +258,15 @@ FCN image:
 
 ## Hyperparameters [ Tuning for Performance ]
 
-	batch_size: number of training samples/images that get propagated through the network in a single pass.
+  batch_size: number of training samples/images that get propagated through the network in a single pass.
 
-	num_epochs: number of times the entire training dataset gets propagated through the network.
+  num_epochs: number of times the entire training dataset gets propagated through the network.
 
-	steps_per_epoch: number of batches of training images that go through the network in 1 epoch. We 			       		have provided you with a default value. One recommended value to try would be based on the total number of images in 
-	training dataset divided by the batch_size.
+  steps_per_epoch: number of batches of training images that go through the network in 1 epoch.
 
-	validation_steps: number of batches of validation images that go through the network in 1 epoch. This is similar  to 			steps_per_epoch, except validation_steps is for the validation dataset.
+  validation_steps: number of batches of validation images that go through the network in 1 epoch. 
  
-	workers: maximum number of processes to spin up. This can affect your training speed and is dependent on your hardware. 
+  workers: maximum number of processes to spin up.  
 
 
 
@@ -284,7 +277,7 @@ Test_01
 	num_epochs = 20
 	steps_per_epoch = 100
 	validation_steps = 50
-	workers = 2
+	workers = 32
 	Time = 196 s per epoch 
 	final score = 0.390761421554
 
@@ -296,7 +289,7 @@ Test_02
 	num_epochs = 20
 	steps_per_epoch = 100
 	validation_steps = 100
-	workers = 2
+	workers = 32
 
 	190s - loss: 0.0276 - val_loss: 0.0372
 	0.3843644541361609
@@ -310,7 +303,7 @@ Test_03
 	num_epochs = 20
 	steps_per_epoch = 100
 	validation_steps = 100
-	workers = 2
+	workers = 32
 
 	97s - loss: 0.0235 - val_loss: 0.0329
 	0.3959361719740918
@@ -337,13 +330,10 @@ Test_04
 
 ## Final Score 
 
-measure the model's performance:
-
- 	IOU (intersection over union) metric is used which takes the intersection of the prediction 	pixels and ground truth pixels and divides it by the union of them.
-	
-
-
-	
+Measure the model's performance: IOU (intersection over union)
+	metric is used which takes the intersection of the prediction pixels and ground truth pixels 
+	and divides it by the union of them.
+		
 	
 	Time_3 = 
 	final sore_3 =
@@ -351,9 +341,9 @@ measure the model's performance:
 
 Training GPU:
 
-	classroom workspace
+	classroom workspace provided by Udacity on Jupyter Notebooks
 
-target hero:  
+Target hero:  
 
 	wearing red cloths 
 	where once trained it will be able to identify the hero from common people 
