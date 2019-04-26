@@ -232,7 +232,7 @@ Second decoder block layer
 FCN image:
 
 
-
+![alt text](images/fcn_layers.PNG)
 
 
 
