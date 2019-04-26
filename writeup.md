@@ -96,17 +96,17 @@ implemented the function as follows:
 
 #### c- Encoder Block Process/Code
 
-- Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
+-Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
 
-- separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution layer
+-separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution layer
  
-- The filters parameter defines the size or depth of the output layer = 32 or 64. 
+-The filters parameter defines the size or depth of the output layer = 32 or 64. 
 
 	def encoder_block(input_layer, filters, strides):
     
-   	# TODO Create a separable convolution layer using the separable_conv2d_batchnorm() function.
-    	output_layer = separable_conv2d_batchnorm(input_layer, filters, strides)
-    	return output_layer
+   		# TODO Create a separable convolution layer using the separable_conv2d_batchnorm() function.
+    		output_layer = separable_conv2d_batchnorm(input_layer, filters, strides)
+    		return output_layer
 
 
 ### 2- Decoder Block
@@ -233,18 +233,6 @@ FCN image:
 
 
 ![alt text](images/fcn_layers.png)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
