@@ -56,12 +56,9 @@ Fully Convolutional Encoder-Decoder neural network, these are the FCN layers:
 #### 1- Encoder Block
 
 #### a- Separable Convolutions
-
-convolution performed over each channel  
-	
-different than regular convolutions bc reduction in the number of parameters which improves runtime performance 
-
-reducing overfitting because fewer parameters
+-convolution performed over each channel  
+-different than regular convolutions bc reduction in the number of parameters which improves runtime performance 
+-reducing overfitting because fewer parameters
 
 Coding Seperable Convolutions
 
