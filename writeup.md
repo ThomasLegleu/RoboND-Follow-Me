@@ -301,6 +301,8 @@ Measure the model's performance: IOU (intersection over union)
 	Time = 424s 
 	Final Score = 0.4012908844139478
 	
+![alt text](images/final_fcn_4.27.2019.png)
+	
 
 Training GPU:
 
