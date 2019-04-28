@@ -78,24 +78,40 @@ Fully convolutional networks can have only convolutional layers or layers which 
 
 Input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
 
+#### FCN is consisting of the following components:
+
+Encoder blocks: 
+
+
+
+Decoder blocks: that will take inputs from previous layers, decompress it, by up-sampling and adding inputs from previous encoder blocks through skip connections to recover some of the lost information hence do the precise segmentation.
+
+Softmax activation: normal convolution layer takes outputs from last decoder block and activate output pixels to indicate class and location of objects (semantic segmentation).
+
 ### Build the Model
 
 You need to provide more detail here - why is having more spatial information useful in the decoding layer? What happens to the encoded image that would justify having these skip connections?
 
-1- Encoder block
+1- Encoder block: that will take inputs from previous layers, compress it down to a context.
 
 	a- separable convolutions
 	b- batch normalization
 	c- Encoder Block Process/Code
 	
-2- Decoder block
+2- 1x1 Convolution block: that will reduce depth and capture the global context of the scene.
+
+	1x1 convolution
+
+3- Decoder block: that will take inputs from previous layers, decompress it, by up-sampling and adding inputs from previous encoder blocks through skip connections to recover some of the lost information.
 
   	a- bilinear upsampling
 	b- layer concatenation
 	c- additional separable convolution layers
 	d- Decoder Block Process/Code
 	
-3- Fully Convolutional Network
+4- Softmax activation: normal convolution layer takes outputs from last decoder block and activate output pixels to indicate class and location of objects.
+
+5- Fully Convolutional Network Code 
 
 	a- encoder block(s) - 1x1 convolution - decoder blocks(s)
 
@@ -147,7 +163,15 @@ implemented the function as follows:
     		return output_layer
 
 
-### 2- Decoder Block
+### 2- 1x1 Convolution block: that will reduce depth and capture the global context of the scene.
+
+Reduce the number of depth channels because it is very slow to multiply volumes with extremely large depths.
+
+Replace fully-connected layers with convolutional layers presents an added advantage that during 
+testing your model and you can feed images of any size into your trained network.
+
+
+### 3- Decoder Block
 
 #### a- bilinear upsampling
 
@@ -196,8 +220,16 @@ implemented as follows:
 	    # TODO Add some number of separable convolution layers
 	    output_layer = separable_conv2d_batchnorm(output_layer, filters)
 	    return output_layer
+	    
+### 4- Softmax activation: 
+
+-normal convolution layer 
+	
+-takes outputs from last decoder block to indicate class and location of objects.
+
+	return layers.Conv2D(num_classes, 1, activation='softmax', padding='same')(x)
     
-### 3- Fully Convolutional Network used for identification:
+### 5- Fully Convolutional Network used for identification:
 
 I created 2 encoder/decoder levels because I was able to tweak the network paymasters enough to achieve a high enough final score. The FCN model used for the project contains two encoder block layers, a 1x1 convolution layer, two decoder block layers, and filter depths between 32 and 64.
 
@@ -227,12 +259,7 @@ I created 2 encoder/decoder levels because I was able to tweak the network payma
 	The padding and the stride of 2 cause each layer to halve the image size, while increasing the 
 	depth to match the filter size used
 
-#### 1x1 convolution layer
-
-reduce the number of depth channels, since it is often very slow to multiply volumes with extremely large depths.
-
-Replacement of fully-connected layers with convolutional layers presents an added advantage that during inference 
-(testing your model), you can feed images of any size into your trained network
+#### 1x1 convolution block layer
 
 a 1x1 convolution is verses a fully connected layer and when you would use one over the other.
 
