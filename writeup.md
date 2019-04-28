@@ -39,38 +39,44 @@ Keras: is a high level deep learning API that allows you to focus on network arc
 ##  Network Architecture : Fully Convolutional neural network (FCN)
 
 
-A Fully Convolutional neural network (FCN) is a normal CNN, where the last fully connected layer (classification layer) is substituted by another 1x1 convolution layer with a large "receptive field". 
+A Fully Convolutional neural network (FCN) is a normal CNN, where the last fully connected layer is substituted by another 1x1 convolution layer and upsampled for scene segmentation. 
 
-The idea here is to capture the global context of the scene and enable us to tell what are the objects and their approximate locations in the scene. The output will be scene segmentation not only object classfication as it is the case in CNN.
+The idea here is to capture the global context of the scene and enable us to tell what are the objects and their approximate locations in the scene. The output will be scene segmentation 
 
 The structure of FCN is divided into three parts 
 
 	(convolution or encoder) part which will extract features from the image 
 	
 	A 1x1 convolution simply maps an input pixel with all it's channels to an output pixel, not looking at anything around 
-	itself. It is often used to reduce the number of depth channels, since it is often very slow to multiply volumes with 
+	itself. 
+	Used to reduce the number of depth channels, since it is often very slow to multiply volumes with 
 	extremely large depths.
 	
 	(transposed convolution, deconvolution or decoder) part which will upscale the output of the encoder
 
-Convert our last fully connected (FC) layer of the CNN to a 1x1 convolutional layer we choose our new conv layer to be big enough so that it will enable us to have this localization effect scaled up to our original input image size then activate pixels to indicate objects and their approximate locations.
+Convert our last fully connected (FC) layer of the CNN to a 1x1 convolutional layer
 
-Replacement of fully-connected layers with convolutional layers presents an added advantage that during inference (testing your model), you can feed images of any size into your trained network.
+We choose our new conv layer to be big enough so that it will enable us to have this localization effect 
+scaled up to our original input image size then activate pixels to indicate objects and their approximate locations.
+
+Replacement of fully-connected layers with convolutional layers presents an added advantage that during testing, you can feed images of any size into your trained network.
 
 #### problem and solution
 
-We lose some information every time we do convolution (encoding or down-sampling) because we keep the smaller picture (the local context) and lose the bigger picture (the global context) 
+We lose some information every time we do convolution through encoding or down-sampling.
 
-To solve this problem we also get some activation from previous layers (known as skip connections)and sum them together with the 
-upsampled outputs when decoding from the previous layer 
+This is because we keep the smaller picture and lose the bigger picture. 
+
+To solve this problem we also get some activation from previous layers known as skip connections and sum them together with the 
+upsampled outputs when decoding from the previous layer to avoid loss in information
 
 #### When and why we use FCN ?
 
-Traditional convolutional networks (CNN) are having fully connected layers at the end (as shown above) hence cannot manage different input sizes, where as fully convolutional networks (FCN) can have only convolutional layers or layers which can manage different input sizes and are faster at that task. This is possible because output depends only on the local area of input; So input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
+Traditional convolutional networks have fully connected layers and cannot manage different input sizes 
 
-For this project we will be using FCN for semantic segmentation, however there are many other uses such us scene understanding in which multiple decoders are used to extract multiple meanings from the same trained model.
+Fully convolutional networks can have only convolutional layers or layers which can manage different input sizes and are faster at that task.
 
-
+This is possible because output depends only on the local area of input; So input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
 
 ### Build the Model
 
@@ -336,6 +342,7 @@ Test_03
 ## Final Score 
 
 Measure the model's performance: IOU (intersection over union)
+
 	metric is used which takes the intersection of the prediction pixels and ground truth pixels 
 	and divides it by the union of them.
 		
@@ -361,14 +368,17 @@ Target hero:
 This could be used for training on other things other than the specified target. The fully convolutional network would work on other humans, animals, particular cars, vegetation, and other elements that would be part of identification. The training would need to be deployed in a manner to handle other information besides the target object leaving it on our responsibility to train, validate, and test on before running the simulation on another object...
 
 
-## future enhancements:
+## Future Enhancements:
 
-Recording a bigger dataset capturing more angles/distances of the target will help in further improving the network accuracy.
+Record a bigger dataset to further improving the network accuracy.
 
-Adding more layers will also help in capturing more contexts and improve accuracy of segmentation.
+Change in learning rate can also be helpful in reducing learning time.
 
-Changing learning rate can also be helpful in reducing learning time.
+Adding skip connections can improve results but up to a certain number of connections based on what we generated.
 
-Adding skip connections can improve results but up to a certain number of connections only based on number of layers that we have.
+Adding more encoder-decoder layers to improve accuracy of segmentation.
+
+
+
 
 
