@@ -96,17 +96,17 @@ implemented the function as follows:
 
 #### c- Encoder Block Process/Code
 
-- Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
+-Create an encoder block that includes a separable convolution layer using the separable_conv2d_batchnorm() function.
 
-- separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution layer
+-separable_conv2d_batchnorm() function adds a batch normalization layer after the separable convolution layer
  
-- The filters parameter defines the size or depth of the output layer = 32 or 64. 
+-The filters parameter defines the size or depth of the output layer = 32 or 64. 
 
 	def encoder_block(input_layer, filters, strides):
     
-   	# TODO Create a separable convolution layer using the separable_conv2d_batchnorm() function.
-    	output_layer = separable_conv2d_batchnorm(input_layer, filters, strides)
-    	return output_layer
+   		# TODO Create a separable convolution layer using the separable_conv2d_batchnorm() function.
+    		output_layer = separable_conv2d_batchnorm(input_layer, filters, strides)
+    		return output_layer
 
 
 ### 2- Decoder Block
@@ -232,19 +232,7 @@ Second decoder block layer
 FCN image:
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+![alt text](images/fcn_layers.png)
 
 
 
@@ -262,62 +250,45 @@ FCN image:
 
 
 
-Test_01
+Test_01 
+
+	learning_rate = 0.004
+	batch_size = 32
+	num_epochs = 35
+	steps_per_epoch = 100
+	validation_steps = 100
+	workers = 32
+
+	Time =  62s
+	Final Score = 0.392293308138
+
+
+
+Test_02 
  
+	learning_rate = 0.004
+	batch_size = 64
+	num_epochs = 35
+	steps_per_epoch = 175
+	validation_steps = 175
+	workers = 32
+
+	Time = 86s 
+	Final Score = 0.39924187389526666
+
+
+Test_03 
+
 	learning_rate = 0.004
 	batch_size = 128
 	num_epochs = 20
-	steps_per_epoch = 100
-	validation_steps = 50
-	workers = 32
-	Time = 196 s per epoch 
-	final score = 0.390761421554
-
-
-Test_02
-
-	learning_rate = 0.003
-	batch_size = 128
-	num_epochs = 20
-	steps_per_epoch = 100
+	steps_per_epoch = 250
 	validation_steps = 100
 	workers = 32
 
-	190s - loss: 0.0276 - val_loss: 0.0372
-	0.3843644541361609
+	Time = 424s 
+	Final Score = 0.4012908844139478
 
-
-Test_03
-
-
-	learning_rate = 0.002
-	batch_size = 64
-	num_epochs = 20
-	steps_per_epoch = 100
-	validation_steps = 100
-	workers = 32
-
-	97s - loss: 0.0235 - val_loss: 0.0329
-	0.3959361719740918
-
-
-Test_04
-
-	learning_rate = 0.001
-	batch_size = 64
-	num_epochs = 40
-	steps_per_epoch = 100
-	validation_steps = 100
-	workers = 2
-
-	96s - loss: 0.0207 - val_loss: 0.0294
-	0.4177765472185131
-
-	Time_2 =  
-	final score_2 =
-
-	Time_3 = 
-	final sore_3 =  
 
 
 ## Final Score 
@@ -327,8 +298,8 @@ Measure the model's performance: IOU (intersection over union)
 	and divides it by the union of them.
 		
 	
-	Time_3 = 
-	final sore_3 =
+	Time = 424s 
+	Final Score = 0.4012908844139478
 	
 
 Training GPU:
