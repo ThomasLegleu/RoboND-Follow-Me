@@ -70,13 +70,13 @@ This is because we keep the smaller picture and lose the bigger picture.
 To solve this problem we also get some activation from previous layers known as skip connections and sum them together with the 
 upsampled outputs when decoding from the previous layer to avoid loss in information
 
-#### When and why we use FCN ?
+#### Benefits of using FCN ?
 
 Traditional convolutional networks have fully connected layers and cannot manage different input sizes 
 
-Fully convolutional networks can have only convolutional layers or layers which can manage different input sizes and are faster at that task.
+Fully convolutional networks can have only convolutional layers or layers which can manage different input sizes and are faster at that task because output depends only on the local area of input.
 
-This is possible because output depends only on the local area of input; So input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
+Input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
 
 ### Build the Model
 
@@ -117,8 +117,6 @@ implemented the function as follows:
 	kernel_size = number that specifies the (width, height) of the kernel,
 	padding =  "same" or "valid"
 	activation = activation function [ ex. “relu” ]
-
-
 
 
 #### b- Batch Normalization
