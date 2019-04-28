@@ -45,14 +45,11 @@ The idea here is to capture the global context of the scene and enable us to tel
 
 The structure of FCN is divided into three parts 
 
-	(convolution or encoder) part which will extract features from the image 
+	encoder: part which will extract features from the image 
 	
-	A 1x1 convolution simply maps an input pixel with all it's channels to an output pixel, not looking at anything around 
-	itself. 
-	Used to reduce the number of depth channels, since it is often very slow to multiply volumes with 
-	extremely large depths.
+	A 1x1 convolution: maps an input pixel with all it's channels to an output pixel
 	
-	(transposed convolution, deconvolution or decoder) part which will upscale the output of the encoder
+	decoder: part which will upscale the output of the encoder
 
 Convert our last fully connected (FC) layer of the CNN to a 1x1 convolutional layer
 
@@ -78,16 +75,6 @@ Fully convolutional networks can have only convolutional layers or layers which 
 
 Input can be of arbitrary size and produce correspondingly-sized output with efficient inference and learning.
 
-#### FCN is consisting of the following components:
-
-Encoder blocks: 
-
-
-
-Decoder blocks: that will take inputs from previous layers, decompress it, by up-sampling and adding inputs from previous encoder blocks through skip connections to recover some of the lost information hence do the precise segmentation.
-
-Softmax activation: normal convolution layer takes outputs from last decoder block and activate output pixels to indicate class and location of objects (semantic segmentation).
-
 ### Build the Model
 
 You need to provide more detail here - why is having more spatial information useful in the decoding layer? What happens to the encoded image that would justify having these skip connections?
@@ -100,7 +87,7 @@ You need to provide more detail here - why is having more spatial information us
 	
 2- 1x1 Convolution block: that will reduce depth and capture the global context of the scene.
 
-	1x1 convolution
+	a- 1x1 convolution
 
 3- Decoder block: that will take inputs from previous layers, decompress it, by up-sampling and adding inputs from previous encoder blocks through skip connections to recover some of the lost information.
 
@@ -111,7 +98,7 @@ You need to provide more detail here - why is having more spatial information us
 	
 4- Softmax activation: normal convolution layer takes outputs from last decoder block and activate output pixels to indicate class and location of objects.
 
-5- Fully Convolutional Network Code 
+5- Fully Convolutional Network 	Paramters/Code 
 
 	a- encoder block(s) - 1x1 convolution - decoder blocks(s)
 
